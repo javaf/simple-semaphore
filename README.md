@@ -1,47 +1,46 @@
-A lock is re-entrant if it can be acquired multiple
-times by the same thread. Simple Reentrant Lock
-uses owner thread ID and hold count fields to keep
-track of the owning thread and the number of times
-it holds the lock. A common lock is used for
-ensuring field updates are atomic, and a condition
-object is used for synchronization.
+Semaphore is a generalization of mutual
+exclusion locks. It allows at most N threads
+into critical section. Simple Semaphore uses
+a state field to keep track of the number of
+threads currently in CS, and is limited to
+a fixed capacity. A common lock is used for
+ensuring field updates are atomic, and a
+condition object is used for synchronization.
 
-Acquiring the lock involves holding the common
-lock, waiting until there is no other thread
-holding it, updating owner thread ID (to current)
-and incrementing hold count before releasing the
-common lock.
+Acquiring the semaphore involves holding the
+common lock, waiting until the CS is not full,
+and incrementing the number of threads in CS
+before releasing the common lock.
 
-Releasing the write lock involves holding the
-common lock, decrementing hold count, and if
-not holding anymore, signalling the others before
-releasing the common lock.
+Releasing the semaphore involves holding the
+common lock, decrementing the number of
+threads in CS, and signalling that CS is not
+full before releasing the common lock.
 
-Java already provides a ReentrantLock. This is
+Java already provides a Semaphore. This is
 for educational purposes only.
 
 ```java
-lock():
+acquire():
 1. Acquire common lock.
-2. Wait until there is no other holder.
-3. Update owner, and increment hold count.
+2. Wait until CS is not full.
+3. Increment number of threads in CS.
 4. Release common lock.
 ```
 
 ```java
-unlock():
+release():
 1. Acquire common lock.
-2. Throw expection, if we dont hold it.
-3. Decrement hold count.
-4. If not holding anymore, signal others.
-5. Release common lock.
+2. Decrement number of threads in CS.
+3. Signal that CS is not full.
+4. Release common lock.
 ```
 
-See [SimpleReentrantLock.java] for code, [Main.java] for test, and [repl.it] for output.
+See [SimpleSemaphore.java] for code, [Main.java] for test, and [repl.it] for output.
 
-[SimpleReentrantLock.java]: https://repl.it/@wolfram77/simple-reentrant-lock#SimpleReentrantLock.java
-[Main.java]: https://repl.it/@wolfram77/simple-reentrant-lock#Main.java
-[repl.it]: https://simple-reentrant-lock.wolfram77.repl.run
+[SimpleSemaphore.java]: https://repl.it/@wolfram77/simple-semaphore#SimpleSemaphore.java
+[Main.java]: https://repl.it/@wolfram77/simple-semaphore#Main.java
+[repl.it]: https://simple-semaphore.wolfram77.repl.run
 
 
 ### references

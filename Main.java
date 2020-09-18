@@ -34,7 +34,8 @@ class Main {
 
   // Unsafe thread executes CS N times, without
   // holding a lock. This can cause CS to be
-  // executed non-atomically which can be detected.
+  // executed non-atomically which can be
+  // detected.
   //
   // Safe thread executes CS N times, while
   // holding a lock. This allows CS to always be
