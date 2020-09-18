@@ -1,25 +1,25 @@
 import java.util.concurrent.locks.*;
 
-// Semaphore is a generalization of mutual exclusion locks. It allows at most N threads into critical section. Java has a built-in Semaphore.
-// times by the same thread. Simple Reentrant Lock
-// uses owner thread ID and hold count fields to keep
-// track of the owning thread and the number of times
-// it holds the lock. A common lock is used for
-// ensuring field updates are atomic, and a condition
-// object is used for synchronization.
-// cr
-// Acquiring the lock involves holding the common
-// lock, waiting until there is no other thread
-// holding it, updating owner thread ID (to current)
-// and incrementing hold count before releasing the
-// common lock.
+// Semaphore is a generalization of mutual
+// exclusion locks. It allows at most N threads
+// into critical section. Simple Semaphore uses
+// a state field to keep track of the number of
+// threads currently in CS, and is limited to
+// a fixed capacity. A common lock is used for
+// ensuring field updates are atomic, and a
+// condition object is used for synchronization.
 // 
-// Releasing the write lock involves holding the
-// common lock, decrementing hold count, and if
-// not holding anymore, signalling the others before
-// releasing the common lock.
+// Acquiring the semaphore involves holding the
+// common lock, waiting until the CS is not full,
+// and incrementing the number of threads in CS
+// before releasing the common lock.
 // 
-// Java already provides a ReentrantLock. This is
+// Releasing the semaphore involves holding the
+// common lock, decrementing the number of
+// threads in CS, and signalling that CS is not
+// full before releasing the common lock.
+// 
+// Java already provides a Semaphore. This is
 // for educational purposes only.
 
 class SimpleSemaphore {

@@ -1,13 +1,10 @@
-import java.util.concurrent.locks.*;
-
 class Main {
-  static Lock lock;
+  static SimpleSemaphore sem;
   static double[] sharedData;
   static int SD = 100, CS = 100;
-  static int HC = 100, TH = 10;
+  static int TH = 10;
   // SD: shared data array size
   // CS: critical section executed per thread
-  // HC: hold count for a thread
   // TH: number of threads
 
   // Critical section updated shared data
@@ -43,12 +40,11 @@ class Main {
   // holding a lock. This allows CS to always be
   // executed atomically which can be verified.
   static Thread thread(String id, boolean safe) {
-    int H = safe? HC : 0;
     Thread t = new Thread(() -> {
       for(int i=0; i<CS; i++) {
-        for (int h=0; h<H; h++) lock.lock();
+        if (safe) sem.acquire();
         criticalSection();
-        for (int h=0; h<H; h++) lock.unlock();
+        if (safe) sem.release();
       }
       log(id+": done");
     });
@@ -75,7 +71,7 @@ class Main {
   }
 
   public static void main(String[] args) {
-    lock = new SimpleSemaphore();
+    sem = new SimpleSemaphore(1);
     sharedData = new double[SD];
     testThreads(false);
     testThreads(true);
