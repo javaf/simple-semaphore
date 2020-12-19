@@ -20,6 +20,11 @@ full before releasing the common lock.
 Java already provides a Semaphore. This is
 for educational purposes only.
 
+> **Course**: [Concurrent Data Structures], Monsoon 2020\
+> **Taught by**: Prof. Govindarajulu Regeti
+
+[Concurrent Data Structures]: https://github.com/iiithf/concurrent-data-structures
+
 ```java
 acquire():
 1. Acquire common lock.
